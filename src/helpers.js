@@ -7,9 +7,9 @@ export function isImage(file) {
 export function convertBytesToMbsOrKbs(filesize) {
     let size = '';
     if (filesize >= 1048576) {
-        size = (filesize / 1048576) + ' megabytes';
+        size = (filesize / 1048576).toFixed(2) + ' megabytes';
     } else if (filesize >= 1024) {
-        size = (filesize / 1024) + ' kilobytes';
+        size = (filesize / 1024).toFixed(2) + ' kilobytes';
     } else {
         size = filesize + ' bytes';
     }
