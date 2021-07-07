@@ -43,9 +43,9 @@ function convertBytesToMbsOrKbs(filesize) {
   var size = '';
 
   if (filesize >= 1048576) {
-    size = filesize / 1048576 + ' megabytes';
+    size = (filesize / 1048576).toFixed(2) + ' megabytes';
   } else if (filesize >= 1024) {
-    size = filesize / 1024 + ' kilobytes';
+    size = (filesize / 1024).toFixed(2) + ' kilobytes';
   } else {
     size = filesize + ' bytes';
   }
@@ -587,6 +587,7 @@ var DropzoneAreaBase = /*#__PURE__*/function (_React$PureComponent) {
           dropzoneParagraphClass = _this$props4.dropzoneParagraphClass,
           dropzoneProps = _this$props4.dropzoneProps,
           dropzoneText = _this$props4.dropzoneText,
+          dropzoneText2 = _this$props4.dropzoneText2,
           fileObjects = _this$props4.fileObjects,
           filesLimit = _this$props4.filesLimit,
           getPreviewIcon = _this$props4.getPreviewIcon,
@@ -634,7 +635,11 @@ var DropzoneAreaBase = /*#__PURE__*/function (_React$PureComponent) {
           className: classes.icon
         }) : /*#__PURE__*/createElement(CloudUploadIcon, {
           className: classes.icon
-        })), previewsInDropzoneVisible && /*#__PURE__*/createElement(PreviewList$1, {
+        }), /*#__PURE__*/createElement(Typography, {
+          variant: "h5",
+          component: "p",
+          className: clsx(classes.text, dropzoneParagraphClass)
+        }, dropzoneText2)), previewsInDropzoneVisible && /*#__PURE__*/createElement(PreviewList$1, {
           fileObjects: fileObjects,
           handleRemove: _this2.handleRemove,
           getPreviewIcon: getPreviewIcon,
@@ -679,6 +684,7 @@ DropzoneAreaBase.defaultProps = {
   fileObjects: [],
   maxFileSize: 3000000,
   dropzoneText: 'Drag and drop a file here or click',
+  dropzoneText2: 'Max: 10 files',
   previewText: 'Preview:',
   disableRejectionFeedback: false,
   showPreviews: false,
@@ -749,6 +755,9 @@ process.env.NODE_ENV !== "production" ? DropzoneAreaBase.propTypes = {
 
   /** Text inside the dropzone. */
   dropzoneText: PropTypes.string,
+
+  /** Text inside the dropzone. Under the Icon.*/
+  dropzoneText2: PropTypes.string,
 
   /** Custom CSS class name for dropzone container. */
   dropzoneClass: PropTypes.string,

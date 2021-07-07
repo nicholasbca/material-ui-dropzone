@@ -204,6 +204,7 @@ class DropzoneAreaBase extends React.PureComponent {
             dropzoneParagraphClass,
             dropzoneProps,
             dropzoneText,
+            dropzoneText2,
             fileObjects,
             filesLimit,
             getPreviewIcon,
@@ -264,6 +265,13 @@ class DropzoneAreaBase extends React.PureComponent {
                                 ) : (
                                     <CloudUploadIcon className={classes.icon} />
                                 )}
+                                <Typography
+                                    variant="h5"
+                                    component="p"
+                                    className={clsx(classes.text, dropzoneParagraphClass)}
+                                >
+                                    {dropzoneText2}
+                                </Typography>
                             </div>
 
                             {previewsInDropzoneVisible &&
@@ -328,6 +336,7 @@ DropzoneAreaBase.defaultProps = {
     fileObjects: [],
     maxFileSize: 3000000,
     dropzoneText: 'Drag and drop a file here or click',
+    dropzoneText2: 'Max: 10 files',
     previewText: 'Preview:',
     disableRejectionFeedback: false,
     showPreviews: false, // By default previews show up under in the dialog and inside in the standalone
@@ -384,6 +393,8 @@ DropzoneAreaBase.propTypes = {
     maxFileSize: PropTypes.number,
     /** Text inside the dropzone. */
     dropzoneText: PropTypes.string,
+    /** Text inside the dropzone. Under the Icon.*/
+    dropzoneText2: PropTypes.string,
     /** Custom CSS class name for dropzone container. */
     dropzoneClass: PropTypes.string,
     /** Custom CSS class name for text inside the container. */
