@@ -9,30 +9,31 @@ import _possibleConstructorReturn from '@babel/runtime/helpers/possibleConstruct
 import _getPrototypeOf from '@babel/runtime/helpers/getPrototypeOf';
 import _objectWithoutProperties from '@babel/runtime/helpers/objectWithoutProperties';
 import PropTypes from 'prop-types';
-import { createElement, Fragment, PureComponent } from 'react';
-import Snackbar from '@material-ui/core/Snackbar';
-import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
-import AttachFileIcon from '@material-ui/icons/AttachFile';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import { createElement, Fragment, isValidElement, PureComponent } from 'react';
+import Snackbar from '@mui/material/Snackbar';
+import Typography from '@mui/material/Typography';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@mui/styles';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import clsx from 'clsx';
 import Dropzone from 'react-dropzone';
-import Chip from '@material-ui/core/Chip';
-import Fab from '@material-ui/core/Fab';
-import Grid from '@material-ui/core/Grid';
-import DeleteIcon from '@material-ui/icons/Delete';
-import IconButton from '@material-ui/core/IconButton';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import CloseIcon from '@material-ui/icons/Close';
-import ErrorIcon from '@material-ui/icons/Error';
-import InfoIcon from '@material-ui/icons/Info';
-import WarningIcon from '@material-ui/icons/Warning';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import Chip from '@mui/material/Chip';
+import Fab from '@mui/material/Fab';
+import Grid from '@mui/material/Grid';
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+import SnackbarContent from '@mui/material/SnackbarContent';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CloseIcon from '@mui/icons-material/Close';
+import ErrorIcon from '@mui/icons-material/Error';
+import InfoIcon from '@mui/icons-material/Info';
+import WarningIcon from '@mui/icons-material/Warning';
+import Button$1 from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
 
 function isImage(file) {
   if (file.type.split('/')[0] === 'image') {
@@ -358,6 +359,10 @@ var styles$2 = function styles(_ref) {
       width: 51,
       height: 51,
       color: palette.text.primary
+    },
+    resetButton: {
+      display: 'block',
+      margin: '10px 0'
     }
   };
 };
@@ -603,7 +608,8 @@ var DropzoneAreaBase = /*#__PURE__*/function (_React$PureComponent) {
           showFileNamesInPreview = _this$props4.showFileNamesInPreview,
           showPreviews = _this$props4.showPreviews,
           showPreviewsInDropzone = _this$props4.showPreviewsInDropzone,
-          useChipsForPreview = _this$props4.useChipsForPreview;
+          useChipsForPreview = _this$props4.useChipsForPreview,
+          reset = _this$props4.reset;
       var _this$state2 = this.state,
           openSnackBar = _this$state2.openSnackBar,
           snackbarMessage = _this$state2.snackbarMessage,
@@ -649,7 +655,11 @@ var DropzoneAreaBase = /*#__PURE__*/function (_React$PureComponent) {
           previewGridClasses: previewGridClasses,
           previewGridProps: previewGridProps
         }));
-      }), previewsVisible && /*#__PURE__*/createElement(Fragment, null, /*#__PURE__*/createElement(Typography, {
+      }), reset && ( /*#__PURE__*/isValidElement(reset) ? reset : /*#__PURE__*/createElement(Button, {
+        onClick: reset.onClick,
+        variant: "outlined",
+        className: classes.resetButton
+      }, reset.text || 'reset')), previewsVisible && /*#__PURE__*/createElement(Fragment, null, /*#__PURE__*/createElement(Typography, {
         variant: "subtitle1",
         component: "span"
       }, previewText), /*#__PURE__*/createElement(PreviewList$1, {
@@ -696,6 +706,7 @@ DropzoneAreaBase.defaultProps = {
   previewChipProps: {},
   previewGridClasses: {},
   previewGridProps: {},
+  reset: undefined,
   showAlerts: true,
   alertSnackbarProps: {
     anchorOrigin: {
@@ -806,6 +817,19 @@ process.env.NODE_ENV !== "production" ? DropzoneAreaBase.propTypes = {
 
   /** The label for the file preview section. */
   previewText: PropTypes.string,
+
+  /**
+   * The node of button to clear dropzone.
+   *
+   * - can be a node to mount in a placeholder.
+   * - can be an object:
+   *  - text (string) - text of the button
+   *  - onClick (function) - callback fired when reset button clicked
+   */
+  reset: PropTypes.oneOfType([PropTypes.node, PropTypes.shape({
+    text: PropTypes.string,
+    onClick: PropTypes.func
+  })]),
 
   /**
    * Shows styled Material-UI Snackbar when files are dropped, deleted or rejected.
@@ -1115,7 +1139,7 @@ var DropzoneArea = /*#__PURE__*/function (_React$PureComponent) {
       }); // Notify removed file
 
       if (onDelete) {
-        onDelete(removedFileObj.file);
+        onDelete(removedFileObj.file, removedFileObjIdx);
       } // Update local state
 
 
@@ -1190,6 +1214,7 @@ process.env.NODE_ENV !== "production" ? DropzoneArea.propTypes = _extends({}, Dr
    * Fired when a file is deleted from the previews panel.
    *
    * @param {File} deletedFile The file that was removed.
+   * @param {number} index The index of the removed file object.
    */
   onDelete: PropTypes.func
 }) : void 0;
@@ -1264,10 +1289,10 @@ var DropzoneDialogBase = /*#__PURE__*/function (_React$PureComponent) {
         maxWidth: maxWidth,
         onClose: onClose,
         open: open
-      }), /*#__PURE__*/createElement(DialogTitle, null, dialogTitle), /*#__PURE__*/createElement(DialogContent, null, /*#__PURE__*/createElement(DropzoneAreaBase$1, dropzoneAreaProps)), /*#__PURE__*/createElement(DialogActions, null, /*#__PURE__*/createElement(Button, {
+      }), /*#__PURE__*/createElement(DialogTitle, null, dialogTitle), /*#__PURE__*/createElement(DialogContent, null, /*#__PURE__*/createElement(DropzoneAreaBase$1, dropzoneAreaProps)), /*#__PURE__*/createElement(DialogActions, null, /*#__PURE__*/createElement(Button$1, {
         color: "primary",
         onClick: onClose
-      }, cancelButtonText), /*#__PURE__*/createElement(Button, {
+      }, cancelButtonText), /*#__PURE__*/createElement(Button$1, {
         color: "primary",
         disabled: submitDisabled,
         onClick: onSave
