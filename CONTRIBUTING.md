@@ -11,18 +11,11 @@ These steps will guide you through contributing to this project:
 
   ```shell
     git clone https://github.com/[YOUR-USERNAME]/material-ui-dropzone
-
-    yarn install
   ```
 
 - Launch the interactive docs by running
 
-  ```shell
-    yarn docs:dev
-  ```
-
 - Make and commit your changes
-- Make sure the command `yarn build` is working
 - Finally send a [GitHub Pull Request](https://github.com/Yuvaleros/material-ui-dropzone/compare) with a clear list of what you've done (read more [about pull requests](https://help.github.com/articles/about-pull-requests/))
 
 ### Notes
